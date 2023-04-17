@@ -1,0 +1,56 @@
+.dark-mode {
+    background-color: #1a1a1a !important;
+    color: #ffffff !important;
+}
+
+.dark-mode-button {
+    all: unset;
+    position: fixed;
+    right: 2em;
+    top: 2em;
+    cursor: pointer;
+    ;
+}
+
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#inputContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: 1px solid #ddd;
+    padding: 20px;
+}
+
+#inputContainer input[type="text"] {
+    width: 300px;
+    padding: 10px;
+    box-sizing: border-box;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+#inputContainer button {
+    padding: 10px;
+    margin: 3px 0;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+#inputContainer button:hover {
+    background-color: #3e8e41;
+}
