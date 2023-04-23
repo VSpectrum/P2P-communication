@@ -22,8 +22,8 @@ const router = async () => {
     const validRoom = room.match(/^\#[A-Za-z0-9]{30}$/);
     if (validRoom) {
         const roomID = validRoom[0].substr(1);
-        app.innerHTML = `<h1>${roomID}</h1>`;
-        // load room file
+        app.innerHTML = await loadFile('room.html');
+        import(`./comms.js`);
     }
     else {
         // invalid room detected, generating new room
