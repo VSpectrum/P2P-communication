@@ -1,6 +1,6 @@
 // Set up a WebSocket connection to the FastAPI server
 const room = window.location.hash ? window.location.hash.substr(1) : null;
-const sig_server = '127.0.0.1:8000';
+const sig_server = '194.195.213.98:8000';
 const sig_server_socket = new WebSocket(`ws://${sig_server}/chat/${room}`);
 const chan_channel = 'chat';
 let connectionChangeCount = 0;
