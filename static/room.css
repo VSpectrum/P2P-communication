@@ -1,8 +1,3 @@
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-}
 body {
     font-family: Arial, sans-serif;
     font-size: 14px;
@@ -33,7 +28,7 @@ body {
 .chat-body {
     padding: 10px 15px;
     overflow-y: scroll;
-    height: 350px;
+    height: 90vh;
 }
 .message {
     margin-bottom: 20px;
@@ -56,7 +51,6 @@ body {
     font-size: 12px;
     color: #999;
     margin-top: 5px;
-    align-self: flex-end;
 }
 .message.sent {
     align-items: flex-end;
@@ -71,6 +65,10 @@ body {
     background-color: #fff;
     border-top: 1px solid #e5e5ea;
     padding: 10px 15px;
+    position: absolute;
+    bottom: 0;
+    max-width: 570px;
+    width: 92vw;
 }
 .chat-footer input[type="text"] {
     flex: 1;
@@ -94,4 +92,14 @@ body {
 }
 .chat-footer button:hover {
     background-color: #0e8e66;
+}
+
+.flex-end {
+    align-self: flex-end;
+}
+
+#chatInputText {
+    font-size: 16px;
+    width: 100%;
+    margin-right: 15px;
 }

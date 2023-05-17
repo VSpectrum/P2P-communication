@@ -1,11 +1,12 @@
-<link rel="stylesheet" href="room.css">
+<link rel="stylesheet" href="static/room.css">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <div class="chat">
     <div class="chat-header">
         <!-- <span>online</span> -->
     </div>
     <div class="chat-body" id="chat-body"></div>
     <div class="chat-footer">
-        <input type="text" id="chatInputText" placeholder="Type a message...">
+        <span contenteditable="true" role="textbox" id="chatInputText" placeholder="Type a message..."></span>
         <button id="chatInputButton">Send</button>
     </div>
 </div>

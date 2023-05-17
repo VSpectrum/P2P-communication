@@ -1,7 +1,7 @@
 // Set up a WebSocket connection to the FastAPI server
 const room = window.location.hash ? window.location.hash.substr(1) : null;
-const sig_server = '194.195.213.98:8000';
-const sig_server_socket = new WebSocket(`ws://${sig_server}/chat/${room}`);
+const sig_server = 'signal.reticence.net:8000';
+const sig_server_socket = new WebSocket(`wss://${sig_server}/chat/${room}`);
 const chan_channel = 'chat';
 let connectionChangeCount = 0;
 
@@ -18,23 +18,23 @@ sig_server_socket.onclose = () => {
     console.log('Lost connection to signaling server');
 };
 
-const openDataChannel = (connection) => { 
-    var dataChannelOptions = { 
-       reliable:true 
-    }; 
+const openDataChannel = (connection) => {
+    var dataChannelOptions = {
+        reliable: true
+    };
     dataChannels[connection] = connection.createDataChannel(chan_channel, dataChannelOptions);
     dataChannels[connection].onopen = function () {
         console.log('Text channel ready');
     };
 }
 
-const buildHTMLMessage = (event, sent=false) => {
+const buildHTMLMessage = (event, sent = false) => {
     const currentTime = new Date();
     const time = currentTime.toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric', second: 'numeric', hour12: true });
-    return `<div class="message ${sent?'sent':null}">
+    return `<div class="message ${sent ? 'sent' : ''}">
         <div class="sender-name"></div>
         <div class="message-text">${event.data}</div>
-        <div class="message-time">${time}</div>
+        <div class="message-time ${sent ? "flex-end" : ''}">${time}</div>
     </div>`;
 }
 
@@ -46,14 +46,23 @@ const messageReceived = (event) => {
     }
 }
 
+document.getElementById("chatInputText").addEventListener("keydown", (e) => {
+    if (e.key === 'Enter') {
+        e.preventDefault();
+        document.getElementById("chatInputButton").click();
+    }
+});
+
 document.getElementById("chatInputButton").addEventListener("click", () => {
     const chatInput = document.getElementById("chatInputText");
+    const inputText = chatInput.textContent;
+    if (inputText === "") return;
     for (const channel of Object.keys(dataChannels)) {
-        dataChannels[channel].send(chatInput.value);
-        document.getElementById('chat-body').innerHTML += buildHTMLMessage({data: chatInput.value}, true);
+        dataChannels[channel].send(inputText);
+        document.getElementById('chat-body').innerHTML += buildHTMLMessage({ data: inputText }, true);
         document.getElementById('chat-body').scrollTop = document.getElementById('chat-body').scrollHeight;
     }
-    chatInput.value = "";
+    chatInput.textContent = "";
 });
 
 // Listen for incoming WebRTC ICE candidates from the server
@@ -74,17 +83,17 @@ sig_server_socket.addEventListener('message', event => {
                                 messageReceived(event);
                             }
                         };
-                      };
+                    };
                     const chatChannel = peerConnections[connection].createDataChannel('chat');
                     peerConnections[connection].createOffer().then((offer) => {
                         peerConnections[connection].onicecandidate = ({ candidate }) => {
                             if (candidate) {
                                 peerConnections[connection].addIceCandidate(candidate);
-                                sig_server_socket.send(JSON.stringify({transaction: 'ice', payload: JSON.stringify(candidate), to: connection}));
-                            } 
+                                sig_server_socket.send(JSON.stringify({ transaction: 'ice', payload: JSON.stringify(candidate), to: connection }));
+                            }
                         }
                         peerConnections[connection].setLocalDescription(offer);
-                        sig_server_socket.send(JSON.stringify({transaction: 'offer', payload: JSON.stringify(offer), to: connection}));
+                        sig_server_socket.send(JSON.stringify({ transaction: 'offer', payload: JSON.stringify(offer), to: connection }));
                     });
                 }
             }
@@ -104,18 +113,18 @@ sig_server_socket.addEventListener('message', event => {
                         messageReceived(event);
                     }
                 };
-              };
+            };
             peerConnections[data.from].createDataChannel('chat');
             peerConnections[data.from].setRemoteDescription(JSON.parse(data.payload));
             peerConnections[data.from].createAnswer().then((answer) => {
                 peerConnections[data.from].onicecandidate = ({ candidate }) => {
                     if (candidate) {
                         peerConnections[data.from].addIceCandidate(candidate);
-                        sig_server_socket.send(JSON.stringify({transaction: 'ice', payload: JSON.stringify(candidate), to: data.from}));
+                        sig_server_socket.send(JSON.stringify({ transaction: 'ice', payload: JSON.stringify(candidate), to: data.from }));
                     }
                 }
                 peerConnections[data.from].setLocalDescription(answer);
-                sig_server_socket.send(JSON.stringify({transaction: 'answer', payload: JSON.stringify(answer), to: data.from}));
+                sig_server_socket.send(JSON.stringify({ transaction: 'answer', payload: JSON.stringify(answer), to: data.from }));
             });
         }
         if (data.transaction === 'answer') {
