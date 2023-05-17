@@ -29,6 +29,7 @@ body {
     padding: 10px 15px;
     overflow-y: scroll;
     height: 90vh;
+    border: 5px solid;
 }
 .message {
     margin-bottom: 20px;
@@ -46,6 +47,7 @@ body {
     border-radius: 10px;
     max-width: 80%;
     word-wrap: break-word;
+    color: white;
 }
 .message .message-time {
     font-size: 12px;
@@ -62,13 +64,15 @@ body {
 .chat-footer {
     display: flex;
     align-items: center;
-    background-color: #fff;
+    background-color: #dbdbdb;
     border-top: 1px solid #e5e5ea;
     padding: 10px 15px;
     position: absolute;
     bottom: 0;
-    max-width: 570px;
+    max-width: 568px;
     width: 92vw;
+    border: 1px solid;
+    border-radius: 5px;
 }
 .chat-footer input[type="text"] {
     flex: 1;
@@ -102,4 +106,9 @@ body {
     font-size: 16px;
     width: 100%;
     margin-right: 15px;
+    background-color: white;
+    color: black;
+    border: 1px solid;
+    border-radius: 5px;
+    padding: 0 5px;
 }
